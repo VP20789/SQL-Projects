@@ -1,0 +1,301 @@
+SELECT SOURCE_SYSTEM, COMPANY_CODE FROM bize_grp_fin_pe_pd_cur_ctlg.db_curated_gbs_didq.fdo_dq_rules_systems_bp_supplier WHERE RULE_ID = 'DQ3'
+
+select distinct
+current_date() as RUN_DATE,
+'BP Supplier' as Business_Object_Category,
+'BP Supplier' as Business_Object,
+'DQ3' as RULE_ID,
+'DQ3 BP Supplier  ADR2 TELNR_LONG' as RULE_NAME,
+"Should not contain any aphabets or special characters" as RULE_DETAILS,
+ ADR2.Source_System,
+ lfb1.BUKRS
+-- 'ADR2' as TABLE_NAME,
+-- 'TELNR_LONG' as COLUMN_NAME,
+-- ADR2.Source_System,
+-- LFB1.BUKRS as Company_Code,
+-- 'Source_System,CLIENT,ADDRNUMBER,PERSNUMBER,DATE_FROM,CONSNUMBER' as PK,
+-- ADR2.Source_System || ' ' || ADR2.CLIENT || ' ' || ADR2.ADDRNUMBER || ' ' || ADR2.PERSNUMBER || ' ' || ADR2.DATE_FROM || ' ' || ADR2.CONSNUMBER as PK_VALUE,
+-- ADR2.TELNR_LONG as COLUMN_VALUE
+from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.adr2 AS ADR2
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 AS LFA1
+ON LFA1.ADRNR = ADR2.ADDRNUMBER
+AND LFA1.SOURCE_SYSTEM = ADR2.SOURCE_SYSTEM
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 AS LFB1
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+WHERE (ADR2.SOURCE_SYSTEM, LFB1.BUKRS) IN
+  (SELECT SOURCE_SYSTEM, COMPANY_CODE FROM bize_grp_fin_pe_pd_cur_ctlg.db_curated_gbs_didq.fdo_dq_rules_systems_bp_supplier WHERE RULE_ID = 'DQ3')
+-- AND ADR2.TELNR_LONG NOT LIKE '%[^0-9]%'
+
+--DQ10
+select source_system, street from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.adrc
+where
+Source_System in ("PRECLNT100","PRVCLNT100","PR4CLNT100","ZRGCLNT100")
+--AND ADRc.CITY1 LIKE '%[^0-9]%'
+--where ADR2.TELNR_LONG NOT LIKE '%[^0-9]%'
+
+--DQ48
+select LFA1.name1 from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.adrc
+Join biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 on adrc.ADDRNUMBER = LFA1.ADRNR and adrc.SOURCE_SYSTEM = LFA1.SOURCE_SYSTEM
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+
+Where
+LFB1.BUKRS in ("ES0D", "AU21", "0400", "9051")
+and
+lfb1.Source_system in ("ZRGCLNT100", "PRECLNT100", "PRVCLNT100", "PR4CLNT100")
+
+--LENGTH(LFA1.NAME1) <= '35'
+--ADRC.PO_BOX NOT IN(' ','','Null','NA','N/A') AND ADRC.POST_CODE2 = ' ';
+--AND ADRC.REGION IN('XXX','TEST','000', 'NA', 'N/A', 'DUM', '123', 'ABC', 'XYZ', 'PQR ')
+
+select * from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.usmd120c
+where
+USMD_CREQ_TYPE = "ZSUNG2P1"
+
+--DQ99
+--select * from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfm1 as LFM1
+--Join biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 on adrc.ADDRNUMBER = LFA1.--ADRNR and adrc.SOURCE_SYSTEM = LFA1.SOURCE_SYSTEM
+--LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1
+--ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+
+-- DQ104
+select lfb1.source_system, bukrs, inco1,inco2_l from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfm1 as LFM1
+join biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 as LFB1 on lfm1.SOURCE_SYSTEM = lfb1.SOURCE_SYSTEM AND lfm1.LIFNR = lfb1.LIFNR
+
+Where
+LFM1.INCO1 NOT IN(' ','','Null','NA','N/A') AND LFM1.INCO2_L in (' ','','Null','NA','N/A')
+and
+LFB1.BUKRS in ("ES0D", "AU21", "0400", "9051")
+and
+LFB1.Source_system in ("ZRGCLNT100", "PRECLNT100", "PRVCLNT100", "PR4CLNT100")
+
+--DQ73
+select * from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1
+and
+STCEG IN (' ','','Null','NA','N/A')
+
+
+select * from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.adr6
+select * from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.adr2
+
+select source_system,NAME1,NAME2, NAME3,NAME4, lifnr, LAND1, TXJCD from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1
+where
+LAND1 = 'BR'
+and
+TXJCD in ('null', '',' ','NA')
+where
+TELBX not in ('null', ' ')
+and telf1 not in ('null', ' ')
+and telf2 not in ('null', ' ')
+
+select lfa1.source_system, lifnr, bnka.adrnr, lfa1.adrnr, BNKA.BNKLZ from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.bnka as BNKA
+join biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 as lfa1 on lfa1.ADRNR = BNKA.ADRNR
+where
+lfa1.source_system in ('ZRGCLNT100')
+and
+BNKA.BNKLZ in ('null',' ')
+
+select TEL_NUMBER, TEL_EXTENS, TELNR_LONG, TELNR_CALL from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.adr2
+where
+TEL_NUMBER not in('null','',' ')
+and
+TEL_EXTENS not in('null','',' ',0)
+and
+TELNR_LONG not in ('null','',' ',0)
+and
+TELNR_CALL not in ('null','',' ',0)
+and
+len(TEL_EXTENS) > 9
+and
+len(TEL_NUMBER) > 9
+and
+len(TELNR_LONG) > 9
+and
+len(TELNR_CALL) > 9
+
+Select SOURCE_SYSTEM, LIFNR, ADRNR,TELBX, TELF1, TELF2 from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1
+WHERE
+TELBX not in ('null','',' ',0)
+and
+TELF1 not in ('null','',' ',0)
+and
+TELF2 not in ('null','',' ',0)
+AND
+LEN(TELBX) > 9
+AND
+LEN(TELF1) > 9
+AND
+LEN(TELF2)> 9
+
+-- DQ54, 56
+select LFA1.source_system, LFA1.NAME3, LFA1.NAME4 from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 as LFA1
+JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 as LFB1
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+Where
+LFB1.BUKRS in ("ES0D", "AU21", "0400", "9051")
+and
+LFA1.Source_system in ("ZRGCLNT100", "PRECLNT100", "PRVCLNT100", "PR4CLNT100")
+and
+LFA1.NAME4 NOT IN(' ','','Null','NA','N/A') AND LFA1.NAME3 = '';
+
+
+-- DQ 58
+SELECT lfa1.Source_System,lfa1.LIFNR, LFB1.BUKRs,NAME2,NAME3,NAME4 FROM biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1
+JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 as LFB1
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+Where
+LFB1.BUKRS in ("ES0D", "AU21", "0400", "9051")
+and
+LFA1.Source_system in ("ZRGCLNT100", "PRECLNT100", "PRVCLNT100", "PR4CLNT100")
+AND
+NAME1 NOT IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LENGTH(NAME1) = '35'
+AND
+NAME2 NOT IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LENGTH(NAME2) = '35'
+AND
+NAME3 NOT IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LENGTH(NAME3) = '35'
+AND
+NAME4 IN ('', 'NULL', 'NA', 'N/A', ' ')
+
+-- DQ58
+select LFA1.SOURCE_SYSTEM, BUKRS,LFB1.LIFNR,NAME1, NAME2, NAME3, NAME4 from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1
+JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 as LFB1
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+WHERE
+NAME1 NOT IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LENGTH(NAME1) = '35'
+AND
+NAME2 NOT IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LENGTH(NAME2) = '35'
+AND
+NAME3 NOT IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LENGTH(NAME3) = '35'
+AND
+NAME4 IN ('', 'NULL', 'NA', 'N/A', ' ')
+AND
+LFB1.BUKRS in ("ES0D", "AU21", "0400", "9051")
+AND
+LFA1.Source_system in ("ZRGCLNT100", "PRECLNT100", "PRVCLNT100", "PR4CLNT100")
+
+-- DQ63
+select LFA1.source_system, LFA1.MCOD1, LFA1.MCOD2 from biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 as LFA1
+JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 as LFB1
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+Where
+LFB1.BUKRS in ("ES0D", "AU21", "0400", "9051")
+and
+LFA1.Source_system in ("ZRGCLNT100", "PRECLNT100", "PRVCLNT100", "PR4CLNT100")
+and
+LFA1.MCOD1 not IN(' ','','Null','NA','N/A')
+AND
+LFA1.MCOD2 not IN(' ','','Null','NA','N/A')
+
+
+--dq rule 55
+ 
+select 
+
+current_date() as RUN_DATE,
+
+'BP Supplier' as Business_Object_Category,
+
+'BP Supplier' as Business_Object,
+
+'DQ55.1' as RULE_ID,
+
+'DQ55.1 BP Supplier  BUT000 NAME_ORG2' as RULE_NAME,
+
+"Should stores only first 35 characters, other characters should move to Name3 field - STCD1" as RULE_DETAILS,
+
+'BUT000' as TABLE_NAME,
+
+'NAME_ORG2' as COLUMN_NAME,
+
+BUT000.Source_System,
+
+LFB1.BUKRS as Company_Code,
+
+'Source_System,CLIENT,PARTNER' as PK,
+
+BUT000.Source_System || ' ' || BUT000.CLIENT || ' ' || BUT000.PARTNER as PK_VALUE,
+
+BUT000.NAME_ORG2 as COLUMN_VALUE
+
+FROM biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.BUT000
+
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.DFKKBPTAXNUM AS DFKKBPTAXNUM
+
+ON BUT000.Source_System = DFKKBPTAXNUM.SOURCE_SYSTEM AND BUT000.PARTNER = DFKKBPTAXNUM.PARTNER
+
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 AS LFA1
+
+ON BUT000.Source_System = LFA1.SOURCE_SYSTEM AND DFKKBPTAXNUM.TAXNUM = LFA1.STCD1
+
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 AS LFB1
+
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+
+WHERE (BUT000.SOURCE_SYSTEM, LFB1.BUKRS) IN 
+
+  (SELECT SOURCE_SYSTEM, COMPANY_CODE FROM bize_grp_fin_pe_pd_cur_ctlg.db_curated_gbs_didq.fdo_dq_rules_systems_bp_supplier WHERE RULE_ID = 'DQ55') 
+
+AND LENGTH(BUT000.NAME_ORG2) <= '35'
+ 
+UNION ALL
+ 
+select 
+
+current_date() as RUN_DATE,
+
+'BP Supplier' as Business_Object_Category,
+
+'BP Supplier' as Business_Object,
+
+'DQ55.2' as RULE_ID,
+
+'DQ55.2 BP Supplier  BUT000 NAME_ORG2' as RULE_NAME,
+
+"Should stores only first 35 characters, other characters should move to Name3 field - STCD2" as RULE_DETAILS,
+
+'BUT000' as TABLE_NAME,
+
+'NAME_ORG2' as COLUMN_NAME,
+
+BUT000.Source_System,
+
+LFB1.BUKRS as Company_Code,
+
+'Source_System,CLIENT,PARTNER' as PK,
+
+BUT000.Source_System || ' ' || BUT000.CLIENT || ' ' || BUT000.PARTNER as PK_VALUE,
+
+BUT000.NAME_ORG2 as COLUMN_VALUE
+
+FROM biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.BUT000
+
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.DFKKBPTAXNUM AS DFKKBPTAXNUM
+
+ON BUT000.Source_System = DFKKBPTAXNUM.SOURCE_SYSTEM AND BUT000.PARTNER = DFKKBPTAXNUM.PARTNER
+
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfa1 AS LFA1
+
+ON BUT000.Source_System = LFA1.SOURCE_SYSTEM AND DFKKBPTAXNUM.TAXNUM = LFA1.STCD2
+
+LEFT JOIN biz_grp_fin_pe_cur_ctlg.db_curated_cim_sap_ecc_master.lfb1 AS LFB1
+
+ON LFA1.SOURCE_SYSTEM = LFB1.SOURCE_SYSTEM AND LFA1.LIFNR = LFB1.LIFNR
+
+WHERE (BUT000.SOURCE_SYSTEM, LFB1.BUKRS) IN 
+
+  (SELECT SOURCE_SYSTEM, COMPANY_CODE FROM bize_grp_fin_pe_pd_cur_ctlg.db_curated_gbs_didq.fdo_dq_rules_systems_bp_supplier WHERE RULE_ID = 'DQ55') 
+
+AND LENGTH(BUT000.NAME_ORG2) <= '35'
+ 
