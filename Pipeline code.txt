@@ -1,0 +1,50 @@
+{
+  "name": "Copy raw → bronze",
+  "type": "Copy",
+  "dependsOn": [],
+  "policy": {
+    "timeout": "7.00:00:00",
+    "retry": 0,
+    "retryIntervalInSeconds": 30,
+    "secureOutput": false,
+    "secureInput": false
+  },
+  "typeProperties": {
+    "source": {
+      "type": "DelimitedTextSource",
+      "formatSettings": {
+        "type": "DelimitedTextReadSettings",
+        "skipLineCount": 1
+      },
+      "storeSettings": {
+        "type": "AzureBlobStorageReadSettings"
+      }
+    },
+    "sink": {
+      "type": "DelimitedTextSink",
+      "storeSettings": {
+        "type": "AzureBlobStorageWriteSettings"
+      },
+      "formatSettings": {
+        "type": "DelimitedTextWriteSettings"
+      }
+    },
+    "enableStaging": false,
+    "translator": {
+      "type": "TabularTranslator",
+      "mappings": []
+    }
+  },
+  "inputs": [
+    {
+      "referenceName": "ds_raw_smartgear_sales",
+      "type": "DatasetReference"
+    }
+  ],
+  "outputs": [
+    {
+      "referenceName": "ds_bronze_smartgear_sales",
+      "type": "DatasetReference"
+    }
+  ]
+}
